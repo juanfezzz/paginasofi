@@ -14,26 +14,24 @@
             --mouse-x: 0; --mouse-y: 0;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             background-color: var(--bg-pink-light);
             background-image: linear-gradient(45deg, var(--bg-pink-dark) 25%, transparent 25%, transparent 75%, var(--bg-pink-dark) 75%, var(--bg-pink-dark)), linear-gradient(-45deg, var(--bg-pink-dark) 25%, transparent 25%, transparent 75%, var(--bg-pink-dark) 75%, var(--bg-pink-dark));
             background-size: 30px 30px; animation: backgroundScroll 30s linear infinite;
-            height: 100vh; overflow: hidden; perspective: 1500px;
+            height: 100vh; width: 100vw; overflow: hidden; /* IMPORTANTE: Oculta barras de scroll */
+            perspective: 1500px;
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" style="font-size:20px"><text y="18">💖</text></svg>'), auto;
         }
         @keyframes backgroundScroll { from { background-position: 0 0; } to { background-position: 60px 60px; } }
 
-        /* --- PANTALLA BLANCA DE ENTRADA (TRANSICIÓN) --- */
+        /* FADE INICIAL */
         #white-fade {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: white; z-index: 9999; pointer-events: none;
             animation: fadeOutWhite 2.5s cubic-bezier(0.6, 0.05, 0.28, 0.99) forwards;
         }
-        @keyframes fadeOutWhite {
-            0% { opacity: 1; }
-            70% { opacity: 1; } /* Se mantiene blanco un momento */
-            100% { opacity: 0; }
-        }
+        @keyframes fadeOutWhite { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
 
         /* ILUMINACIÓN Y DECORACIÓN */
         #glow-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 40; background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, rgba(255, 105, 180, 0.3) 60%, rgba(255, 20, 147, 0.5) 100%); mix-blend-mode: overlay; }
@@ -57,7 +55,7 @@
         #cinta { bottom: 70px; left: 0; width: 100%; height: 40px; object-fit: cover; opacity: 0.6; mix-blend-mode: multiply; }
         #brillos { top:0; left:0; width:100%; height:100%; object-fit: cover; opacity: 0.5; mix-blend-mode: screen; animation: twinkle 3s infinite alternate; pointer-events: none; }
 
-        /* MENÚ PRINCIPAL */
+        /* MENÚ PRINCIPAL (BOTONES) */
         #buttons-wrapper {
             position: absolute; top: 50%; left: 50%; 
             transform: translate(-50%, -50%) translateX(calc(var(--mouse-x) * -15px)) translateY(calc(var(--mouse-y) * -15px)) rotateX(calc(var(--mouse-y) * -5deg)) rotateY(calc(var(--mouse-x) * 5deg));
@@ -82,7 +80,7 @@
         .menu-item:hover { transform: scale(1.05) translateZ(30px); border-color: #ff1493; }
         .menu-item:hover .card-img { transform: scale(1.1); }
 
-        /* SECCIONES Y TRANSICIONES */
+        /* SECCIONES CONTENEDORES */
         .content-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 200; display: none; flex-direction: column; align-items: center; justify-content: center;
@@ -101,7 +99,7 @@
         }
         .back-button:hover { background: #ff69b4; color: white; border-style: solid; transform: scale(1.05); }
 
-        /* --- 📖 LIBRO GIGANTE (Estilos Base PC) --- */
+        /* --- 📖 LIBRO --- */
         .book-wrapper {
             width: 1200px; height: 750px;
             background-image: url('img/libro_abierto.png'); background-size: 100% 100%; 
@@ -109,7 +107,6 @@
             perspective: 3000px;
         }
         .book-pages-container { position: relative; width: 88%; height: 84%; transform-style: preserve-3d; }
-        
         .book-page {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; backface-visibility: hidden;
@@ -119,9 +116,7 @@
         .page-active { transform: rotateY(0deg); z-index: 2; opacity: 1; }
         .page-hidden-left { transform: rotateY(-180deg); opacity: 0; z-index: 1; }
         .page-hidden-right { transform: rotateY(180deg); opacity: 0; z-index: 1; }
-
         .page-side { width: 50%; height: 100%; display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding: 40px; box-sizing: border-box; }
-
         .photo-container {
             position: relative; width: 220px; height: 260px;
             background-image: url('img/marco_polaroid.png'); background-size: 100% 100%;
@@ -131,7 +126,6 @@
         }
         .photo-container:hover { transform: scale(1.05) rotate(2deg); z-index: 5; }
         .photo-content { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; }
-
         .book-nav {
             position: absolute; top: 50%; transform: translateY(-50%);
             width: 70px; height: 70px; background: #fff; border: 3px solid #ff69b4; border-radius: 50%;
@@ -185,26 +179,12 @@
         .gift-emoji { font-size: 200px; transition: 0.3s; }
         #gift-trigger:hover .gift-emoji { transform: scale(1.1) rotate(10deg); }
         .gift-hint { font-family: var(--font-kawaii); color: white; margin-top: 20px; font-size: 2rem; text-shadow: 2px 2px #ff69b4; }
-
-        #surprise-reveal {
-            display: none; opacity: 0; flex-direction: column; align-items: center; gap: 25px;
-            transition: opacity 0.8s ease-in; max-width: 90%;
-        }
-        .kawaii-title {
-            font-family: var(--font-kawaii); color: white; font-size: 2.5rem; text-shadow: 3px 3px 0 #ff1493, -1px -1px 0 white;
-            background: rgba(255, 105, 180, 0.7); padding: 10px 25px; border-radius: 30px; border: 3px dotted white;
-        }
-        .equation-box {
-            background: #333; border: 4px solid #ffb7c5; border-radius: 15px; padding: 20px;
-            font-family: var(--font-body); color: #ff69b4; font-size: 1.1rem; text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3); position: relative; overflow: hidden;
-        }
+        #surprise-reveal { display: none; opacity: 0; flex-direction: column; align-items: center; gap: 25px; transition: opacity 0.8s ease-in; max-width: 90%; }
+        .kawaii-title { font-family: var(--font-kawaii); color: white; font-size: 2.5rem; text-shadow: 3px 3px 0 #ff1493, -1px -1px 0 white; background: rgba(255, 105, 180, 0.7); padding: 10px 25px; border-radius: 30px; border: 3px dotted white; }
+        .equation-box { background: #333; border: 4px solid #ffb7c5; border-radius: 15px; padding: 20px; font-family: var(--font-body); color: #ff69b4; font-size: 1.1rem; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); position: relative; overflow: hidden; }
         .equation-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px); pointer-events: none; }
         .equation-line { margin: 5px 0; display: block; white-space: nowrap; }
-        .graph-frame {
-            background: white; border: 5px dotted #ff1493; border-radius: 25px; padding: 15px;
-            box-shadow: 0 15px 35px rgba(255, 20, 147, 0.4); position: relative;
-        }
+        .graph-frame { background: white; border: 5px dotted #ff1493; border-radius: 25px; padding: 15px; box-shadow: 0 15px 35px rgba(255, 20, 147, 0.4); position: relative; }
         .graph-frame::after { content: '❤️'; position: absolute; bottom: -15px; right: -15px; font-size: 2rem; transform: rotate(20deg); }
         #heartCanvas { background: #fff5f8; border-radius: 15px; }
 
@@ -216,59 +196,98 @@
         .clippy-img { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; filter: drop-shadow(0 5px 10px rgba(255, 105, 180, 0.4)); }
 
         /* MUTE BUTTON */
-        #mute-btn {
-            position: fixed; top: 20px; right: 20px; z-index: 6000;
-            background: white; border: 3px solid #ff69b4; border-radius: 50%;
-            width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; cursor: pointer; box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-            transition: 0.3s;
-        }
+        #mute-btn { position: fixed; top: 20px; right: 20px; z-index: 6000; background: white; border: 3px solid #ff69b4; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; box-shadow: 0 5px 10px rgba(0,0,0,0.2); transition: 0.3s; }
         #mute-btn:hover { transform: scale(1.1); background: #fff0f5; }
 
         /* =========================================
-           📱 OPTIMIZACIÓN PARA MÓVILES (Media Queries)
+           📱 OPTIMIZACIÓN REAL PARA MÓVILES (0 SCROLL)
            ========================================= */
         @media (max-width: 768px) {
-            /* Ajustar el libro para que quepa en la pantalla */
-            .book-wrapper {
-                width: 95vw; /* Usar el 95% del ancho de la ventana */
-                height: auto; /* La altura se ajusta automáticamente */
-                aspect-ratio: 4 / 3; /* Mantener una proporción de libro más cuadrada/alta */
-                max-height: 80vh; /* Que no sea más alto que el 80% de la pantalla */
+            /* 1. MENÚ PRINCIPAL (Cuadrícula 2x2 ajustada) */
+            #buttons-wrapper {
+                width: 90%; 
+                gap: 15px; /* Menos espacio entre botones */
+                top: 50%; left: 50%; transform: translate(-50%, -50%) !important; /* Centrado absoluto sin rotación 3D loca */
             }
-            /* Reducir el espacio dentro de las páginas */
-            .page-side {
-                padding: 10px;
-                justify-content: center;
-                gap: 10px; /* Espacio entre fotos verticalmente */
+            .menu-item {
+                width: 44vw; /* Casi la mitad de la pantalla */
+                height: 55vw; /* Proporción vertical */
+                max-height: 220px; /* Que no sean gigantes */
             }
-            /* Hacer las fotos más pequeñas */
-            .photo-container {
-                width: 130px; /* Ancho reducido */
-                height: 160px; /* Alto reducido */
-                padding: 10px 8px 25px 8px; /* Ajustar marco polaroid */
-            }
-            /* Ajustar botones de navegación para que no estorben */
-            .book-nav {
-                width: 40px; height: 40px; font-size: 1.5rem;
-            }
-            .nav-prev { left: -15px; }
-            .nav-next { right: -15px; }
+            .card-text-area span { font-size: 1.2rem; padding: 2px 8px; }
+            .menu-item::after { font-size: 1.5rem; }
 
-            /* Ajustes adicionales para otras secciones en móvil */
-            .back-button { top: 20px; left: 20px; padding: 8px 15px; font-size: 1.2rem; }
+            /* 2. MENSAJES (Layout Compacto Vertical) */
+            .messages-grid {
+                flex-direction: column; /* Columna principal */
+                gap: 10px;
+                width: 95%;
+                align-items: center;
+                transform: scale(0.85); /* Reducir todo un poco para que quepa */
+            }
+            .center-card {
+                order: 1; /* Primero el mensaje diario */
+                width: 100%;
+                height: auto;
+                padding: 15px;
+            }
+            .center-card p { font-size: 1.2rem; margin: 10px 0; }
+            
+            /* Contenedor para los dos botones de abajo */
+            .messages-grid::after {
+                content: ""; /* Hack para layout flex */
+                display: none; 
+            }
+            
+            /* Hacemos que los otros dos botones se pongan uno al lado del otro */
+            .msg-card:not(.center-card) {
+                order: 2;
+                width: 45%; /* Mitad y mitad */
+                height: 140px; /* Bajitos */
+                font-size: 1rem;
+            }
+            /* Necesitamos un wrapper extra o usar Grid para ponerlos side-by-side abajo...
+               Truco rápido: Grid es mejor aquí. */
+            .messages-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto auto;
+            }
+            .center-card { grid-column: 1 / -1; width: 100%; }
+            .msg-card { width: 100%; }
+
+            /* 3. LIBRO (Ajuste para que no se salga) */
+            .book-wrapper {
+                width: 100vw;
+                height: 60vh; /* Altura controlada */
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+            .book-pages-container { width: 85%; height: 75%; }
+            .page-side { padding: 5px; justify-content: center; gap: 5px; }
+            .photo-container {
+                width: 35vw; /* Relativo al ancho de pantalla */
+                height: 42vw;
+                padding: 5px 5px 20px 5px;
+            }
+            .book-nav { width: 40px; height: 40px; font-size: 1.5rem; }
+            .nav-prev { left: 5px; }
+            .nav-next { right: 5px; }
+
+            /* 4. RELOJ (Escalado) */
+            .clock-wrapper { transform: scale(0.65); padding: 20px; width: 100%; }
+            
+            /* 5. OTROS AJUSTES */
+            .back-button { top: 15px; left: 15px; padding: 5px 15px; font-size: 1rem; }
             #mute-btn { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 1.2rem; }
-            .messages-grid { flex-direction: column; gap: 20px; }
-            .clock-wrapper { padding: 20px; }
-            .analog-clock { width: 180px; height: 180px; }
-            .stat-box { width: 70px; padding: 5px; }
-            .stat-number { font-size: 1.5rem; }
-            .gift-emoji { font-size: 150px; }
-            .kawaii-title { font-size: 1.8rem; }
-            #heartCanvas { width: 260px; height: 260px; }
-            #assistant-wrapper { bottom: 20px; right: 20px; }
-            .clippy-container { width: 100px; height: 100px; }
-            .classic-bubble { width: 200px; font-size: 1.1rem; }
+            .gift-emoji { font-size: 120px; }
+            .kawaii-title { font-size: 1.5rem; padding: 5px 15px; }
+            .equation-box { font-size: 0.8rem; padding: 10px; }
+            #heartCanvas { width: 250px; height: 250px; }
+            #assistant-wrapper { bottom: 10px; right: 10px; }
+            .clippy-container { width: 90px; height: 90px; }
+            .classic-bubble { width: 180px; font-size: 1rem; right: 80px; bottom: 80px; }
         }
     </style>
 </head>
@@ -500,16 +519,11 @@
         
         // --- INICIO AUTOMÁTICO (TRUCO) ---
         window.onload = () => {
-            // Intentar reproducir música
             playRandomSong();
-            
-            // Si el navegador bloquea el autoplay, añadimos un listener para que suene al primer clic en cualquier lado
             document.body.addEventListener('click', function() {
                 if (audioCtx.state === 'suspended') audioCtx.resume();
                 if (bgMusic.paused && !isMuted) bgMusic.play();
-            }, { once: true }); // Solo se ejecuta una vez
-
-            // Saludo inicial
+            }, { once: true }); 
             flippyAC("¡Hola mi niña hermosa! Mira lo que hice para ti.");
         };
 
@@ -582,14 +596,12 @@
             const ctx = canvas.getContext('2d');
             const width = canvas.width;
             const height = canvas.height;
-            // Escala dinámica según el ancho del canvas (para móvil)
             const scale = width / 6; 
             const offsetX = width / 2;
             const offsetY = height / 2;
 
             ctx.clearRect(0, 0, width, height);
             
-            // Outer Circle (faint)
             ctx.beginPath(); ctx.strokeStyle = '#ffe0e9'; ctx.lineWidth = 1;
             for (let x = -4.5; x <= 4.5; x += 0.01) {
                 let y = Math.sqrt(6 - x * x);
@@ -601,7 +613,6 @@
             }
             ctx.stroke();
 
-            // Heart Function
             ctx.beginPath(); ctx.strokeStyle = '#ff1493'; ctx.lineWidth = 3;
             for (let x = -2; x <= 2; x += 0.005) {
                 let y = (Math.sqrt(Math.cos(x)) * Math.cos(300 * x) + Math.sqrt(Math.abs(x)) - 0.7) * Math.pow((4 - x * x), 0.01);
@@ -621,7 +632,6 @@
             setTimeout(() => {
                 gift.style.display = 'none';
                 reveal.style.display = 'flex';
-                // Force reflow
                 void reveal.offsetWidth;
                 reveal.style.opacity = '1';
                 drawHeart();
@@ -633,7 +643,6 @@
         function openSection(id) {
             if (!isMuted) { const audio = document.getElementById('click-sound'); if(audio) audio.play().catch(e => {}); }
             
-            // RESET SORPRESA STATE
             if(id !== 'sorpresa') {
                  document.getElementById('gift-trigger').style.display = 'block';
                  document.getElementById('gift-trigger').style.opacity = '1';
