@@ -548,7 +548,7 @@
 
         // --- MENSAJES ---
         const dailyMessages = [ "Esta pagina te la hice con mucho amor, espero que la veas todos los dias y revises las cositas que le voy a ir metiendo, no olvides que te amo con todo mi corazón. Confía en ti misma, yo se que todo lo vas a lograr, te amo." ];
-        const reasons = [ "Por tu bella sonrisa", "Por como me miras", "Por tu apoyo", "Por tus cálidos abrazos", "Por hacerme reír, tu sentido del humor", "Por ser tú misma", "Por ser cariñosa", "Por tu inteligencia" ];
+        const reasons = [ "por tu bella sonrisa", "por como me miras", "por tu apoyo", "por tus cálidos y lindos abrazos", "por hacerme reír y alegrarme el día", "por ser tú misma", "por ser cariñosa y amorosa", "por ser tan inteligente" ];
         const coupons = [ "Este vale por un abrazo", "Este vale por un besito", "Este vale por una salida a comer", "Este vale por un masaje", "Este vale para ir a cine", "Este vale por un heladito" ];
 
         function updateDailyMessage() {
@@ -572,7 +572,7 @@
         function showRandomReason() {
             const r = reasons[Math.floor(Math.random() * reasons.length)];
             document.getElementById('reason-text').innerText = r;
-            flippyAC("Es cierto, yo te amo" + r);
+            flippyAC("Es cierto, yo te amo " + r);
         }
         function showRandomCoupon() {
             const c = coupons[Math.floor(Math.random() * coupons.length)];
@@ -744,6 +744,7 @@
     </script>
 </body>
 </html>
+
 
 
 
