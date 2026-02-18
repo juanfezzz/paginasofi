@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para mi Niña Bonita 💕</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Special+Elite&family=VT323&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-pink-light: #ffc0cb; --bg-pink-dark: #ffb6c1; --main-pink: #ff69b4;
+            --font-cutout: 'Special Elite', cursive; --font-kawaii: 'Fredoka', sans-serif; --font-body: 'VT323', monospace;
+            --mouse-x: 0; --mouse-y: 0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg-pink-light);
+            background-image: linear-gradient(45deg, var(--bg-pink-dark) 25%, transparent 25%, transparent 75%, var(--bg-pink-dark) 75%, var(--bg-pink-dark)), linear-gradient(-45deg, var(--bg-pink-dark) 25%, transparent 25%, transparent 75%, var(--bg-pink-dark) 75%, var(--bg-pink-dark));
+            background-size: 30px 30px; animation: backgroundScroll 30s linear infinite;
+            height: 100vh; overflow: hidden; perspective: 1500px;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" style="font-size:20px"><text y="18">💖</text></svg>'), auto;
+        }
+        @keyframes backgroundScroll { from { background-position: 0 0; } to { background-position: 60px 60px; } }
+
+        /* --- PANTALLA BLANCA DE ENTRADA (TRANSICIÓN) --- */
+        #white-fade {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; z-index: 9999; pointer-events: none;
+            animation: fadeOutWhite 2.5s cubic-bezier(0.6, 0.05, 0.28, 0.99) forwards;
+        }
+        @keyframes fadeOutWhite {
+            0% { opacity: 1; }
+            70% { opacity: 1; } /* Se mantiene blanco un momento */
+            100% { opacity: 0; }
+        }
+
+        /* ILUMINACIÓN Y DECORACIÓN */
+        #glow-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 40; background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, rgba(255, 105, 180, 0.3) 60%, rgba(255, 20, 147, 0.5) 100%); mix-blend-mode: overlay; }
+        .lace-overlay { position: fixed; left: 0; width: 100%; height: 65px; z-index: 2000; pointer-events: none; background-image: url('img/bordes_completos.png'); background-repeat: repeat-x; background-size: auto 500px; }
+        #top-lace { top: 0; background-position: top center; } #bottom-lace { bottom: 0; background-position: bottom center; }
+        #decor-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; transform: translateX(calc(var(--mouse-x) * -20px)) translateY(calc(var(--mouse-y) * -20px)); }
+        .decor { position: absolute; filter: drop-shadow(5px 10px 10px rgba(0,0,0,0.15)); }
+
+        /* ANIMACIONES DECOR */
+        @keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes sway { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(5deg)} }
+        @keyframes drift { 0% { transform: translate(0,0) rotate(0deg); } 100% { transform: translate(20px, -20px) rotate(5deg); } }
+        @keyframes twinkle { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.05); } }
+
+        #perlas { top: -20px; left: -20px; width: 280px; transform-origin: top left; animation: sway 6s infinite alternate; }
+        #ramito { bottom: 80px; right: 30px; width: 140px; animation: floatY 5s infinite; }
+        #mariposas { bottom: 200px; left: 10px; width: 180px; animation: drift 8s infinite alternate; }
+        #rama { top: -30px; left: 50%; width: 350px; transform: translateX(-50%); animation: sway 8s infinite reverse; }
+        #mariposa_sola { top: 25%; left: 15%; width: 90px; animation: floatY 4s infinite 1s; }
+        #flores_vert { top: 45%; right: 5%; width: 65px; animation: floatY 6s infinite 1s; }
+        #cinta { bottom: 70px; left: 0; width: 100%; height: 40px; object-fit: cover; opacity: 0.6; mix-blend-mode: multiply; }
+        #brillos { top:0; left:0; width:100%; height:100%; object-fit: cover; opacity: 0.5; mix-blend-mode: screen; animation: twinkle 3s infinite alternate; pointer-events: none; }
+
+        /* MENÚ PRINCIPAL */
+        #buttons-wrapper {
+            position: absolute; top: 50%; left: 50%; 
+            transform: translate(-50%, -50%) translateX(calc(var(--mouse-x) * -15px)) translateY(calc(var(--mouse-y) * -15px)) rotateX(calc(var(--mouse-y) * -5deg)) rotateY(calc(var(--mouse-x) * 5deg));
+            display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 30px; 
+            z-index: 100; width: 95%; max-width: 1100px; transform-style: preserve-3d;
+            transition: left 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s ease;
+        }
+        .slide-out-left { left: -150% !important; opacity: 0; pointer-events: none; }
+
+        .menu-item {
+            position: relative; width: 240px; height: 320px; background: white; 
+            border: 4px double #ff69b4; border-radius: 25px; padding: 10px;
+            display: flex; flex-direction: column; box-shadow: 0 15px 30px rgba(255, 105, 180, 0.3);
+            cursor: pointer; transition: transform 0.3s; transform-style: preserve-3d;
+        }
+        .card-image-area { flex: 1; width: 100%; background: #fff5f8; border-radius: 15px; border: 2px dotted #ffb7c5; padding: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 5px; }
+        .card-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1)); transition: transform 0.5s; }
+        .card-text-area { height: 55px; width: 100%; background: white; display: flex; align-items: center; justify-content: center; z-index: 10; border-top: 1px dashed #ffc0cb; }
+        .card-text-area span { font-family: var(--font-cutout); font-size: 1.6rem; font-weight: bold; color: #ff1493; background: #fff; padding: 4px 12px; transform: rotate(-2deg); box-shadow: 2px 2px 0 rgba(0,0,0,0.1); border: 1px solid #eee; }
+        .menu-item::after { position: absolute; top: -5px; right: -5px; font-size: 2.2rem; z-index: 20; filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.15)); transform: rotate(15deg); }
+        .btn-heart::after { content: '💖'; } .btn-star::after { content: '⭐'; } .btn-bow::after { content: '🎀'; } .btn-flower::after { content: '🌸'; }
+        .menu-item:hover { transform: scale(1.05) translateZ(30px); border-color: #ff1493; }
+        .menu-item:hover .card-img { transform: scale(1.1); }
+
+        /* SECCIONES Y TRANSICIONES */
+        .content-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 200; display: none; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; 
+        }
+        .anim-enter { animation: slideUpFade 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .anim-exit { animation: slideDownFade 0.6s forwards; }
+        @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(50px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDownFade { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(50px); } }
+
+        .back-button {
+            position: absolute; top: 80px; left: 50px;
+            background: #fff; color: #ff69b4; border: 3px dashed #ff69b4; 
+            padding: 10px 25px; border-radius: 30px; font-family: var(--font-kawaii); font-size: 1.4rem; 
+            cursor: pointer; box-shadow: 0 8px 0 #ffb7c5; transition: 0.2s; z-index: 300; display: flex; align-items: center; gap: 10px;
+        }
+        .back-button:hover { background: #ff69b4; color: white; border-style: solid; transform: scale(1.05); }
+
+        /* --- 📖 LIBRO GIGANTE (Estilos Base PC) --- */
+        .book-wrapper {
+            width: 1200px; height: 750px;
+            background-image: url('img/libro_abierto.png'); background-size: 100% 100%; 
+            position: relative; display: flex; justify-content: center; align-items: center;
+            perspective: 3000px;
+        }
+        .book-pages-container { position: relative; width: 88%; height: 84%; transform-style: preserve-3d; }
+        
+        .book-page {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; backface-visibility: hidden;
+            transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transform-origin: center center;
+        }
+        .page-active { transform: rotateY(0deg); z-index: 2; opacity: 1; }
+        .page-hidden-left { transform: rotateY(-180deg); opacity: 0; z-index: 1; }
+        .page-hidden-right { transform: rotateY(180deg); opacity: 0; z-index: 1; }
+
+        .page-side { width: 50%; height: 100%; display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding: 40px; box-sizing: border-box; }
+
+        .photo-container {
+            position: relative; width: 220px; height: 260px;
+            background-image: url('img/marco_polaroid.png'); background-size: 100% 100%;
+            padding: 20px 15px 50px 15px; box-sizing: border-box; 
+            filter: drop-shadow(2px 3px 4px rgba(0,0,0,0.2));
+            transition: transform 0.2s; cursor: zoom-in;
+        }
+        .photo-container:hover { transform: scale(1.05) rotate(2deg); z-index: 5; }
+        .photo-content { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; }
+
+        .book-nav {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 70px; height: 70px; background: #fff; border: 3px solid #ff69b4; border-radius: 50%;
+            color: #ff69b4; font-size: 2.5rem; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 100; box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3); transition: 0.3s;
+        }
+        .book-nav:hover { transform: translateY(-50%) scale(1.15); background: #ff69b4; color: white; }
+        .nav-prev { left: -50px; } .nav-next { right: -50px; }
+
+        /* LIGHTBOX */
+        #lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); z-index: 9999; display: none;
+            flex-direction: column; align-items: center; justify-content: center;
+            backdrop-filter: blur(5px); animation: fadeIn 0.3s;
+        }
+        #lightbox-img { max-width: 80%; max-height: 80vh; border: 10px solid white; border-radius: 10px; box-shadow: 0 0 50px rgba(255, 105, 180, 0.5); }
+        .close-lightbox {
+            position: absolute; top: 30px; right: 30px;
+            font-family: var(--font-cutout); font-size: 2rem; color: #ff69b4;
+            background: white; width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; border: 3px solid #ff69b4; box-shadow: 0 0 20px rgba(255,255,255,0.5);
+            transition: 0.2s;
+        }
+        .close-lightbox:hover { transform: scale(1.1) rotate(90deg); background: #ff69b4; color: white; }
+
+        /* SECCIÓN MENSAJES */
+        .messages-grid { display: flex; gap: 30px; justify-content: center; align-items: center; width: 100%; max-width: 1000px; }
+        .msg-card { background: white; padding: 25px; border: 2px dashed #ff69b4; border-radius: 20px; font-family: var(--font-cutout); font-size: 1.3rem; text-align: center; color: #333; box-shadow: 5px 5px 0 rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 250px; height: 200px; position: relative; }
+        .msg-card:hover { transform: scale(1.05) rotate(2deg); background: #fff0f5; }
+        .center-card { width: 320px; height: 280px; border: 4px solid #ff69b4; border-style: double; background: #fff; transform: scale(1.05); z-index: 5; }
+        .center-card h3 { color: #ff1493; margin-bottom: 10px; font-family: var(--font-kawaii); }
+        .center-card p { font-size: 1.5rem; line-height: 1.4; }
+        #daily-timer { margin-top: 15px; background: #333; color: #0f0; font-family: var(--font-body); padding: 5px 15px; border-radius: 5px; font-size: 1.5rem; box-shadow: inset 0 0 10px rgba(0,255,0,0.2); }
+
+        /* SECCIÓN TIEMPO */
+        .clock-wrapper { display: flex; flex-direction: column; align-items: center; gap: 30px; background: rgba(255,255,255,0.9); padding: 40px; border-radius: 40px; border: 5px solid #ffb7c5; box-shadow: 0 10px 40px rgba(255,105,180,0.2); }
+        .analog-clock { width: 220px; height: 220px; border: 10px solid #ff69b4; border-radius: 50%; background: white; position: relative; box-shadow: inset 0 0 20px rgba(0,0,0,0.1); }
+        .hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom center; border-radius: 10px; z-index: 2; }
+        .hand.hour { width: 8px; height: 60px; background: #333; } .hand.minute { width: 6px; height: 80px; background: #666; } .hand.second { width: 4px; height: 100px; background: #ff1493; z-index: 3; }
+        .center-dot { position: absolute; top: 50%; left: 50%; width: 16px; height: 16px; background: #ff1493; border-radius: 50%; transform: translate(-50%, -50%); z-index: 4; }
+        .time-stats { display: flex; gap: 15px; justify-content: center; }
+        .stat-box { background: white; border: 3px solid #ff69b4; border-radius: 15px; padding: 10px; text-align: center; width: 90px; box-shadow: 5px 5px 0 rgba(255,105,180,0.2); transition: transform 0.2s; }
+        .stat-box:hover { transform: translateY(-5px); }
+        .stat-number { display: block; font-size: 2rem; font-family: var(--font-kawaii); color: #ff1493; font-weight: bold; }
+        .stat-label { display: block; font-size: 1rem; font-family: var(--font-cutout); color: #555; margin-top: 5px; }
+
+        /* --- SECCIÓN SORPRESA --- */
+        #gift-trigger { cursor: pointer; animation: floatY 2s infinite ease-in-out; text-align: center; transition: opacity 0.5s, transform 0.5s; }
+        .gift-emoji { font-size: 200px; transition: 0.3s; }
+        #gift-trigger:hover .gift-emoji { transform: scale(1.1) rotate(10deg); }
+        .gift-hint { font-family: var(--font-kawaii); color: white; margin-top: 20px; font-size: 2rem; text-shadow: 2px 2px #ff69b4; }
+
+        #surprise-reveal {
+            display: none; opacity: 0; flex-direction: column; align-items: center; gap: 25px;
+            transition: opacity 0.8s ease-in; max-width: 90%;
+        }
+        .kawaii-title {
+            font-family: var(--font-kawaii); color: white; font-size: 2.5rem; text-shadow: 3px 3px 0 #ff1493, -1px -1px 0 white;
+            background: rgba(255, 105, 180, 0.7); padding: 10px 25px; border-radius: 30px; border: 3px dotted white;
+        }
+        .equation-box {
+            background: #333; border: 4px solid #ffb7c5; border-radius: 15px; padding: 20px;
+            font-family: var(--font-body); color: #ff69b4; font-size: 1.1rem; text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3); position: relative; overflow: hidden;
+        }
+        .equation-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px); pointer-events: none; }
+        .equation-line { margin: 5px 0; display: block; white-space: nowrap; }
+        .graph-frame {
+            background: white; border: 5px dotted #ff1493; border-radius: 25px; padding: 15px;
+            box-shadow: 0 15px 35px rgba(255, 20, 147, 0.4); position: relative;
+        }
+        .graph-frame::after { content: '❤️'; position: absolute; bottom: -15px; right: -15px; font-size: 2rem; transform: rotate(20deg); }
+        #heartCanvas { background: #fff5f8; border-radius: 15px; }
+
+        /* ASISTENTE */
+        #assistant-wrapper { position: fixed; bottom: 40px; right: 40px; z-index: 5000; display: flex; flex-direction: column; align-items: flex-end; pointer-events: none; }
+        .classic-bubble { background: #fff; border: 4px solid #ffb7c5; border-radius: 25px; padding: 18px; margin-bottom: 10px; font-family: var(--font-body); font-size: 1.3rem; color: #ff69b4; pointer-events: auto; width: 240px; box-shadow: 8px 8px 0 rgba(255, 183, 197, 0.4); opacity: 0; transform: scale(0.8); transition: all 0.3s; transform-origin: bottom right; }
+        .bubble-show { opacity: 1 !important; transform: scale(1) !important; } .bubble-hide { opacity: 0 !important; transform: scale(0) !important; }
+        .clippy-container { width: 130px; height: 130px; background: transparent; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; pointer-events: auto; animation: floatY 3s infinite ease-in-out; }
+        .clippy-img { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; filter: drop-shadow(0 5px 10px rgba(255, 105, 180, 0.4)); }
+
+        /* MUTE BUTTON */
+        #mute-btn {
+            position: fixed; top: 20px; right: 20px; z-index: 6000;
+            background: white; border: 3px solid #ff69b4; border-radius: 50%;
+            width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; cursor: pointer; box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+        #mute-btn:hover { transform: scale(1.1); background: #fff0f5; }
+
+        /* =========================================
+           📱 OPTIMIZACIÓN PARA MÓVILES (Media Queries)
+           ========================================= */
+        @media (max-width: 768px) {
+            /* Ajustar el libro para que quepa en la pantalla */
+            .book-wrapper {
+                width: 95vw; /* Usar el 95% del ancho de la ventana */
+                height: auto; /* La altura se ajusta automáticamente */
+                aspect-ratio: 4 / 3; /* Mantener una proporción de libro más cuadrada/alta */
+                max-height: 80vh; /* Que no sea más alto que el 80% de la pantalla */
+            }
+            /* Reducir el espacio dentro de las páginas */
+            .page-side {
+                padding: 10px;
+                justify-content: center;
+                gap: 10px; /* Espacio entre fotos verticalmente */
+            }
+            /* Hacer las fotos más pequeñas */
+            .photo-container {
+                width: 130px; /* Ancho reducido */
+                height: 160px; /* Alto reducido */
+                padding: 10px 8px 25px 8px; /* Ajustar marco polaroid */
+            }
+            /* Ajustar botones de navegación para que no estorben */
+            .book-nav {
+                width: 40px; height: 40px; font-size: 1.5rem;
+            }
+            .nav-prev { left: -15px; }
+            .nav-next { right: -15px; }
+
+            /* Ajustes adicionales para otras secciones en móvil */
+            .back-button { top: 20px; left: 20px; padding: 8px 15px; font-size: 1.2rem; }
+            #mute-btn { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 1.2rem; }
+            .messages-grid { flex-direction: column; gap: 20px; }
+            .clock-wrapper { padding: 20px; }
+            .analog-clock { width: 180px; height: 180px; }
+            .stat-box { width: 70px; padding: 5px; }
+            .stat-number { font-size: 1.5rem; }
+            .gift-emoji { font-size: 150px; }
+            .kawaii-title { font-size: 1.8rem; }
+            #heartCanvas { width: 260px; height: 260px; }
+            #assistant-wrapper { bottom: 20px; right: 20px; }
+            .clippy-container { width: 100px; height: 100px; }
+            .classic-bubble { width: 200px; font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="white-fade"></div>
+
+    <audio id="bg-music"></audio>
+    <audio id="click-sound" src="audio/click.mp3"></audio>
+    <audio id="page-flip-sound" src="audio/pageflip.mp3"></audio>
+
+    <div id="mute-btn" onclick="toggleMute()">🔊</div>
+
+    <div id="lightbox">
+        <div class="close-lightbox" onclick="closeLightbox()">✖</div>
+        <img id="lightbox-img" src="" alt="Zoom Foto">
+    </div>
+
+    <div id="glow-overlay"></div>
+    <div id="top-lace" class="lace-overlay"></div>
+    <div id="bottom-lace" class="lace-overlay"></div>
+
+    <div id="decor-layer">
+        <img src="img/perlas.png" id="perlas" class="decor" onerror="this.style.display='none'">
+        <img src="img/ramito.png" id="ramito" class="decor" onerror="this.style.display='none'">
+        <img src="img/mariposas.png" id="mariposas" class="decor" onerror="this.style.display='none'">
+        <img src="img/rama.png" id="rama" class="decor" onerror="this.style.display='none'">
+        <img src="img/mariposa_sola.png" id="mariposa_sola" class="decor" onerror="this.style.display='none'">
+        <img src="img/flores_vert.png" id="flores_vert" class="decor" onerror="this.style.display='none'">
+        <img src="img/cinta.png" id="cinta" class="decor" onerror="this.style.display='none'">
+        <img src="img/brillos.png" id="brillos" class="decor" onerror="this.style.display='none'">
+    </div>
+
+    <div id="buttons-wrapper">
+        <div class="menu-item btn-heart" onmouseover="flippyAC('¡Nuestras fotitos!')" onclick="openSection('nosotros')">
+            <div class="card-image-area"><img src="img/icono_camara.png" class="card-img"></div>
+            <div class="card-text-area"><span>NOSOTROS</span></div>
+        </div>
+        <div class="menu-item btn-star" onmouseover="flippyAC('¡Te escribí algo!')" onclick="openSection('mensajes')">
+             <div class="card-image-area"><img src="img/icono_carta.png" class="card-img"></div>
+            <div class="card-text-area"><span>MENSAJES</span></div>
+        </div>
+        <div class="menu-item btn-bow" onmouseover="flippyAC('¿Cuánto tiempo va?')" onclick="openSection('tiempo')">
+             <div class="card-image-area"><img src="img/icono_reloj.png" class="card-img"></div>
+            <div class="card-text-area"><span>TIEMPO</span></div>
+        </div>
+        <div class="menu-item btn-flower" onmouseover="flippyAC('¡Sorpresaaaa!')" onclick="openSection('sorpresa')">
+             <div class="card-image-area"><img src="img/icono_regalo.png" class="card-img"></div>
+             <div class="card-text-area"><span>SORPRESA</span></div>
+        </div>
+    </div>
+
+    <div id="sec-nosotros" class="content-screen">
+        <button class="back-button" onclick="closeSection()">⬅ VOLVER</button>
+        <div class="book-wrapper">
+             <div class="book-nav nav-prev" onclick="changePage(-1)">❮</div>
+             <div class="book-nav nav-next" onclick="changePage(1)">❯</div>
+
+             <div class="book-pages-container">
+                
+                <div class="book-page page-1 page-active">
+                    <div class="page-side">
+                        <div class="photo-container" style="transform: rotate(-3deg);" onclick="openLightbox('img/f1.jpeg')"><img src="img/f1.jpeg" class="photo-content"></div>
+                        <div class="photo-container" style="transform: rotate(2deg);" onclick="openLightbox('img/f2.jpeg')"><img src="img/f2.jpeg" class="photo-content"></div>
+                    </div>
+                    <div class="page-side">
+                        <div class="photo-container" style="transform: rotate(1deg);" onclick="openLightbox('img/f3.jpeg')"><img src="img/f3.jpeg" class="photo-content"></div>
+                        <div class="photo-container" style="transform: rotate(-4deg);" onclick="openLightbox('img/f4.jpeg')"><img src="img/f4.jpeg" class="photo-content"></div>
+                    </div>
+                </div>
+
+                <div class="book-page page-2 page-hidden-right">
+                    <div class="page-side">
+                        <div class="photo-container" style="transform: rotate(-1deg);" onclick="openLightbox('img/f5.jpeg')"><img src="img/f5.jpeg" class="photo-content"></div>
+                        <div class="photo-container" style="transform: rotate(3deg);" onclick="openLightbox('img/f6.jpeg')"><img src="img/f6.jpeg" class="photo-content"></div>
+                    </div>
+                    <div class="page-side">
+                        <div class="photo-container" style="transform: rotate(2deg);" onclick="openLightbox('img/f7.jpeg')"><img src="img/f7.jpeg" class="photo-content"></div>
+                        <div class="photo-container" style="transform: rotate(-1deg);" onclick="openLightbox('img/f8.jpeg')"><img src="img/f8.jpeg" class="photo-content"></div>
+                    </div>
+                </div>
+
+                <div class="book-page page-3 page-hidden-right">
+                    <div class="page-side">
+                        <div class="photo-container" style="transform: rotate(2deg);" onclick="openLightbox('img/f9.jpeg')"><img src="img/f9.jpeg" class="photo-content"></div>
+                        <div class="photo-container" style="transform: rotate(-2deg);" onclick="openLightbox('img/f10.jpeg')"><img src="img/f10.jpeg" class="photo-content"></div>
+                    </div>
+                    <div class="page-side">
+                        <div class="photo-container" style="transform: rotate(-1deg);" onclick="openLightbox('img/f11.jpeg')"><img src="img/f11.jpeg" class="photo-content"></div>
+                        <div class="photo-container" style="transform: rotate(2deg);" onclick="openLightbox('img/f12.jpeg')"><img src="img/f12.jpeg" class="photo-content"></div>
+                    </div>
+                </div>
+
+                <div class="book-page page-4 page-hidden-right">
+                    <div class="page-side">
+                        <div class="photo-container" style="transform: rotate(-2deg);" onclick="openLightbox('img/f13.jpeg')"><img src="img/f13.jpeg" class="photo-content"></div>
+                        <div class="photo-container" style="transform: rotate(1deg);" onclick="openLightbox('img/f14.jpeg')"><img src="img/f14.jpeg" class="photo-content"></div>
+                    </div>
+                    <div class="page-side">
+                        <div class="photo-container" style="transform: rotate(2deg);" onclick="openLightbox('img/f15.jpeg')"><img src="img/f15.jpeg" class="photo-content"></div>
+                        <div class="photo-container" style="transform: rotate(-1deg);" onclick="openLightbox('img/f16.jpeg')"><img src="img/f16.jpeg" class="photo-content"></div>
+                    </div>
+                </div>
+
+                <div class="book-page page-5 page-hidden-right">
+                    <div class="page-side">
+                        <div class="photo-container" style="transform: rotate(1deg);" onclick="openLightbox('img/f17.jpeg')"><img src="img/f17.jpeg" class="photo-content"></div>
+                        <div class="photo-container" style="transform: rotate(-2deg);" onclick="openLightbox('img/f18.jpeg')"><img src="img/f18.jpeg" class="photo-content"></div>
+                    </div>
+                    <div class="page-side" style="justify-content: center; align-items: center;">
+                        <div class="photo-container" style="transform: rotate(2deg); margin-bottom: 20px;" onclick="openLightbox('img/f19.jpeg')"><img src="img/f19.jpeg" class="photo-content"></div>
+                        <img src="img/chiikawa_3.jpg" alt="Sticker" style="width: 150px; transform: rotate(15deg); filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.2));">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="sec-mensajes" class="content-screen">
+        <button class="back-button" onclick="closeSection()">⬅ VOLVER</button>
+        <div class="messages-grid">
+            <div class="msg-card" onclick="showRandomReason()">
+                <div style="font-size: 3rem;">💖</div>
+                <h3>100 Razones</h3>
+                <p id="reason-text" style="font-size: 1rem; margin-top: 10px; color: #555;">Click para ver una razón...</p>
+            </div>
+
+            <div class="msg-card center-card">
+                <h3>Mensaje Diario 💌</h3>
+                <p id="daily-msg-text" style="font-size: 1.3rem; margin: 20px 0;">Cargando mensaje...</p>
+                <div id="daily-timer">00:00:00</div>
+            </div>
+
+            <div class="msg-card" onclick="showRandomCoupon()">
+                <div style="font-size: 3rem;">🎟️</div>
+                <h3>Cuponera</h3>
+                <p id="coupon-text" style="font-size: 1rem; margin-top: 10px; color: #555;">Click para sacar un vale...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="sec-tiempo" class="content-screen">
+        <button class="back-button" onclick="closeSection()">⬅ VOLVER</button>
+        <div class="clock-wrapper">
+            <div class="analog-clock">
+                <div class="center-dot"></div>
+                <div class="hand hour" id="hour-hand"></div>
+                <div class="hand minute" id="min-hand"></div>
+                <div class="hand second" id="sec-hand"></div>
+            </div>
+            
+            <div class="time-stats">
+                <div class="stat-box">
+                    <span class="stat-number" id="t-days">0</span>
+                    <span class="stat-label">Días</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number" id="t-hours">0</span>
+                    <span class="stat-label">Horas</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number" id="t-mins">0</span>
+                    <span class="stat-label">Min</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number" id="t-secs">0</span>
+                    <span class="stat-label">Seg</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sec-sorpresa" class="content-screen">
+        <button class="back-button" onclick="closeSection()">⬅ VOLVER</button>
+        
+        <div id="gift-trigger" class="gift-container" onclick="revealSurprise()">
+             <div class="gift-emoji">🎁</div>
+             <p class="gift-hint">¡Tócame para ver la magia!</p>
+        </div>
+
+        <div id="surprise-reveal">
+            <h2 class="kawaii-title">✨ La Fórmula de Nuestro Amor ✨</h2>
+            
+            <div class="equation-box">
+                <span class="equation-line" style="color: #fff;">(sqrt(cos(x))*cos(300x)+sqrt(abs(x))-0.7)</span>
+                <span class="equation-line" style="color: #ffb7c5;">* (4-x*x)^0.01</span>
+                <span class="equation-line" style="margin-top: 15px; font-size: 0.9rem; color: #aaa;">sqrt(6-x^2), -sqrt(6-x^2) from -4.5 to 4.5</span>
+            </div>
+
+            <div class="graph-frame">
+                <canvas id="heartCanvas" width="320" height="320"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div id="assistant-wrapper">
+        <div id="bubble" class="classic-bubble"></div>
+        <div class="clippy-container" onclick="toggleBubble()">
+            <img id="clippy-img" src="img/chiikawa1.png" class="clippy-img" alt="Asistente">
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('mousemove', (e) => {
+            let x = (e.clientX / window.innerWidth) - 0.5;
+            let y = (e.clientY / window.innerHeight) - 0.5;
+            x = Math.max(-0.5, Math.min(0.5, x)); y = Math.max(-0.5, Math.min(0.5, y));
+            document.body.style.setProperty('--mouse-x', x);
+            document.body.style.setProperty('--mouse-y', y);
+        });
+
+        // --- AUDIO ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let isMuted = false;
+        const playlist = [
+            'audio/c1.mp3', 'audio/c2.mp3', 'audio/c3.mp3', 'audio/c4.mp3', 'audio/c5.mp3',
+            'audio/c6.mp3', 'audio/c7.mp3', 'audio/c8.mp3', 'audio/c9.mp3', 'audio/c10.mp3'
+        ];
+        const bgMusic = document.getElementById('bg-music');
+
+        function playRandomSong() {
+            const randomSong = playlist[Math.floor(Math.random() * playlist.length)];
+            bgMusic.src = randomSong;
+            bgMusic.volume = 0.2; 
+            bgMusic.play().catch(e => console.log("Interaction needed"));
+        }
+        bgMusic.addEventListener('ended', playRandomSong);
+        
+        // --- INICIO AUTOMÁTICO (TRUCO) ---
+        window.onload = () => {
+            // Intentar reproducir música
+            playRandomSong();
+            
+            // Si el navegador bloquea el autoplay, añadimos un listener para que suene al primer clic en cualquier lado
+            document.body.addEventListener('click', function() {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                if (bgMusic.paused && !isMuted) bgMusic.play();
+            }, { once: true }); // Solo se ejecuta una vez
+
+            // Saludo inicial
+            flippyAC("¡Hola mi niña hermosa! Mira lo que hice para ti.");
+        };
+
+        function playAnimaleseBeep() {
+            if (isMuted || audioCtx.state === 'suspended') return;
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.type = 'sine'; 
+            oscillator.frequency.setValueAtTime(900 + (Math.random() * 150), audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+            oscillator.start(); oscillator.stop(audioCtx.currentTime + 0.08);
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const btn = document.getElementById('mute-btn');
+            if (isMuted) {
+                btn.innerText = "🔇";
+                bgMusic.muted = true;
+                if(audioCtx.state === 'running') audioCtx.suspend();
+            } else {
+                btn.innerText = "🔊";
+                bgMusic.muted = false;
+                bgMusic.play().catch(e => {}); 
+                if(audioCtx.state === 'suspended') audioCtx.resume();
+            }
+        }
+
+        // --- MENSAJES ---
+        const dailyMessages = [ "Eres mi razón de sonreír.", "Hoy te ves hermosa.", "Te amo más que ayer.", "Gracias por existir.", "Eres mi lugar seguro.", "Siempre juntos.", "Mi vida es mejor contigo.", "Eres mi sueño hecho realidad.", "Tu risa es mi sonido favorito.", "Contigo todo es perfecto.", "Eres arte.", "Me haces muy feliz.", "Eres mi persona favorita." ];
+        const reasons = [ "Por tu sonrisa.", "Por como me miras.", "Por tu apoyo incondicional.", "Por tus abrazos.", "Por hacerme reír.", "Por ser tú.", "Por tu bondad.", "Por tu inteligencia." ];
+        const coupons = [ "Vale por un Abrazo 🤗", "Vale por un Beso 😘", "Vale por una Cena 🍔", "Vale por un Masaje 💆‍♀️", "Vale por una Película 🎬", "Vale por un Helado 🍦" ];
+
+        function updateDailyMessage() {
+            const day = new Date().getDate();
+            const msg = dailyMessages[day % dailyMessages.length];
+            document.getElementById('daily-msg-text').innerText = `"${msg}"`;
+        }
+        function updateDailyTimer() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setHours(24, 0, 0, 0);
+            const diff = tomorrow - now;
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / (1000 * 60)) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+            document.getElementById('daily-timer').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        }
+        setInterval(updateDailyTimer, 1000);
+        updateDailyMessage(); 
+
+        function showRandomReason() {
+            const r = reasons[Math.floor(Math.random() * reasons.length)];
+            document.getElementById('reason-text').innerText = r;
+            flippyAC("¡Es verdad! " + r);
+        }
+        function showRandomCoupon() {
+            const c = coupons[Math.floor(Math.random() * coupons.length)];
+            document.getElementById('coupon-text').innerText = c;
+            flippyAC("¡Ganaste! " + c);
+            confettiEffect();
+        }
+
+        // --- HEART GRAPH ---
+        function drawHeart() {
+            const canvas = document.getElementById('heartCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            // Escala dinámica según el ancho del canvas (para móvil)
+            const scale = width / 6; 
+            const offsetX = width / 2;
+            const offsetY = height / 2;
+
+            ctx.clearRect(0, 0, width, height);
+            
+            // Outer Circle (faint)
+            ctx.beginPath(); ctx.strokeStyle = '#ffe0e9'; ctx.lineWidth = 1;
+            for (let x = -4.5; x <= 4.5; x += 0.01) {
+                let y = Math.sqrt(6 - x * x);
+                ctx.lineTo(offsetX + x * scale, offsetY - y * scale);
+            }
+            for (let x = 4.5; x >= -4.5; x -= 0.01) {
+                let y = -Math.sqrt(6 - x * x);
+                ctx.lineTo(offsetX + x * scale, offsetY - y * scale);
+            }
+            ctx.stroke();
+
+            // Heart Function
+            ctx.beginPath(); ctx.strokeStyle = '#ff1493'; ctx.lineWidth = 3;
+            for (let x = -2; x <= 2; x += 0.005) {
+                let y = (Math.sqrt(Math.cos(x)) * Math.cos(300 * x) + Math.sqrt(Math.abs(x)) - 0.7) * Math.pow((4 - x * x), 0.01);
+                ctx.lineTo(offsetX + x * scale, offsetY - y * scale);
+            }
+            ctx.stroke();
+        }
+
+        // --- SORPRESA REVEAL ---
+        function revealSurprise() {
+            confettiEffect();
+            flippyAC("¡Woooow! ¡Mira esto!");
+            const gift = document.getElementById('gift-trigger');
+            const reveal = document.getElementById('surprise-reveal');
+            
+            gift.style.opacity = '0';
+            setTimeout(() => {
+                gift.style.display = 'none';
+                reveal.style.display = 'flex';
+                // Force reflow
+                void reveal.offsetWidth;
+                reveal.style.opacity = '1';
+                drawHeart();
+            }, 500);
+        }
+
+        // --- NAV ---
+        let currentSectionId = null;
+        function openSection(id) {
+            if (!isMuted) { const audio = document.getElementById('click-sound'); if(audio) audio.play().catch(e => {}); }
+            
+            // RESET SORPRESA STATE
+            if(id !== 'sorpresa') {
+                 document.getElementById('gift-trigger').style.display = 'block';
+                 document.getElementById('gift-trigger').style.opacity = '1';
+                 document.getElementById('surprise-reveal').style.display = 'none';
+                 document.getElementById('surprise-reveal').style.opacity = '0';
+            }
+
+            document.getElementById('buttons-wrapper').classList.add('slide-out-left');
+            setTimeout(() => {
+                const section = document.getElementById('sec-' + id);
+                section.style.display = 'flex'; void section.offsetWidth; 
+                section.classList.remove('anim-exit'); section.classList.add('anim-enter');
+                currentSectionId = 'sec-' + id;
+                if(id === 'nosotros') flippyAC("¡Mira qué guapos nos vemos!");
+                else if(id === 'mensajes') flippyAC("Tengo algo que decirte...");
+                else if(id === 'tiempo') flippyAC("¡Cada segundo cuenta!");
+                else { flippyAC("¡Una Ecuación de Amor!"); }
+            }, 600);
+        }
+        function closeSection() {
+            if (!isMuted) { const audio = document.getElementById('click-sound'); if(audio) audio.play().catch(e => {}); }
+            if(currentSectionId) {
+                const section = document.getElementById(currentSectionId);
+                section.classList.remove('anim-enter'); section.classList.add('anim-exit');
+            }
+            setTimeout(() => {
+                document.querySelectorAll('.content-screen').forEach(el => {
+                    el.style.display = 'none'; el.classList.remove('anim-enter', 'anim-exit');
+                });
+                document.getElementById('buttons-wrapper').classList.remove('slide-out-left');
+                currentSectionId = null;
+            }, 600);
+        }
+        function openLightbox(src) { const lb = document.getElementById('lightbox'); const img = document.getElementById('lightbox-img'); img.src = src; lb.style.display = 'flex'; }
+        function closeLightbox() { document.getElementById('lightbox').style.display = 'none'; }
+
+        // --- LIBRO ---
+        let currentPage = 1; const totalPages = 5; 
+        function changePage(direction) {
+            const newPage = currentPage + direction;
+            if(newPage < 1 || newPage > totalPages) return;
+            if (!isMuted) { const audio = document.getElementById('page-flip-sound'); if(audio) audio.currentTime = 0; audio.play().catch(e => {}); }
+            const currentPageEl = document.querySelector(`.page-${currentPage}`);
+            const newPageEl = document.querySelector(`.page-${newPage}`);
+            if(direction > 0) { 
+                currentPageEl.classList.remove('page-active'); currentPageEl.classList.add('page-hidden-left');
+                newPageEl.classList.remove('page-hidden-right'); newPageEl.classList.add('page-active');
+            } else { 
+                currentPageEl.classList.remove('page-active'); currentPageEl.classList.add('page-hidden-right');
+                newPageEl.classList.remove('page-hidden-left'); newPageEl.classList.add('page-active');
+            }
+            currentPage = newPage;
+        }
+
+        // --- RELOJ ---
+        function updateClock() {
+            const now = new Date();
+            const start = new Date(2025, 7, 5); 
+            const diff = now - start;
+            const sec = now.getSeconds(); const min = now.getMinutes(); const hour = now.getHours();
+            const secDeg = ((sec / 60) * 360); const minDeg = ((min / 60) * 360) + ((sec/60)*6); const hourDeg = ((hour / 12) * 360) + ((min/60)*30);
+            document.getElementById('sec-hand').style.transform = `translateX(-50%) rotate(${secDeg}deg)`;
+            document.getElementById('min-hand').style.transform = `translateX(-50%) rotate(${minDeg}deg)`;
+            document.getElementById('hour-hand').style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+            document.getElementById('t-days').innerText = days; document.getElementById('t-hours').innerText = hours;
+            document.getElementById('t-mins').innerText = minutes; document.getElementById('t-secs').innerText = seconds;
+        }
+        setInterval(updateClock, 1000);
+
+        // --- FLIPPY ---
+        let typeInterval; let hideTimeout; 
+        function flippyAC(text) {
+            const bubble = document.getElementById('bubble');
+            const clippy = document.getElementById('clippy-img'); 
+            clearTimeout(hideTimeout); clearInterval(typeInterval);
+            bubble.classList.remove('bubble-hide'); bubble.classList.add('bubble-show'); bubble.style.display = 'block'; bubble.innerHTML = "";
+            let i = 0; let toggle = false;
+            typeInterval = setInterval(() => {
+                if (i < text.length) { 
+                    bubble.innerHTML += text.charAt(i);
+                    if (!isMuted && i % 2 === 0 && text.charAt(i) !== ' ') playAnimaleseBeep();
+                    if (i % 3 === 0) { toggle = !toggle; clippy.src = toggle ? 'img/chiikawa2.png' : 'img/chiikawa1.png'; }
+                    i++; 
+                } else { 
+                    clearInterval(typeInterval); clippy.src = 'img/chiikawa1.png';
+                    hideTimeout = setTimeout(() => { bubble.classList.remove('bubble-show'); bubble.classList.add('bubble-hide'); }, 2000); 
+                }
+            }, 50); 
+        }
+
+        function toggleBubble() { const b = document.getElementById('bubble'); if(b.classList.contains('bubble-show')) { b.classList.remove('bubble-show'); b.classList.add('bubble-hide'); } else { flippyAC("¿Me llamaste? ¡Aquí estoy! 💕"); } }
+
+        function confettiEffect() {
+            flippyAC("¡TE AMOOO!");
+            for(let i=0; i<60; i++) {
+                const c = document.createElement('div');
+                c.style.position = 'fixed'; c.style.width = '15px'; c.style.height = '15px';
+                c.style.background = ['#ff69b4', '#ffd700', '#fff', '#ff1493'][Math.floor(Math.random()*4)];
+                c.style.left = '50%'; c.style.top = '50%'; c.style.zIndex = 4000; c.style.borderRadius = '50%';
+                document.body.appendChild(c);
+                c.animate([ { transform: 'translate(0,0) scale(1) translateZ(0)' }, { transform: `translate(${Math.random()*1200-600}px, ${Math.random()*1200-600}px) rotate3d(1,1,1, 720deg) scale(0.5) translateZ(200px)` } ], { duration: 2000, easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' }).onfinish = () => c.remove();
+            }
+        }
+    </script>
+</body>
+</html>
