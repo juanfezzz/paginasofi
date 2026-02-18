@@ -19,7 +19,7 @@
             background-color: var(--bg-pink-light);
             background-image: linear-gradient(45deg, var(--bg-pink-dark) 25%, transparent 25%, transparent 75%, var(--bg-pink-dark) 75%, var(--bg-pink-dark)), linear-gradient(-45deg, var(--bg-pink-dark) 25%, transparent 25%, transparent 75%, var(--bg-pink-dark) 75%, var(--bg-pink-dark));
             background-size: 30px 30px; animation: backgroundScroll 30s linear infinite;
-            height: 100dvh; width: 100vw; overflow: hidden; /* IMPORTANTE: Bloquea el scroll */
+            min-height: 100dvh; width: 100vw; overflow: hidden; /* IMPORTANTE: Bloquea el scroll */
             perspective: 1500px;
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" style="font-size:20px"><text y="18">💖</text></svg>'), auto;
         }
@@ -269,7 +269,7 @@
             .clock-wrapper { transform: scale(0.65); padding: 15px; width: 100%; box-shadow: none; background: rgba(255,255,255,0.8); }
             
             /* 5. OTROS AJUSTES */
-            .back-button { top: 15px; left: 15px; padding: 5px 15px; font-size: 1rem; }
+            .back-button { top: 85px; left: 15px; padding: 5px 15px; font-size: 1rem; }
             #mute-btn { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 1.2rem; }
             .gift-emoji { font-size: 120px; }
             .kawaii-title { font-size: 1.5rem; padding: 5px 15px; text-align: center; }
@@ -744,3 +744,4 @@
     </script>
 </body>
 </html>
+
