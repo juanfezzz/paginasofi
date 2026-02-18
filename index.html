@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Para mi Niña Bonita 💕</title>
+    <title>Para mi Niña 💕</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Special+Elite&family=VT323&display=swap" rel="stylesheet">
 
@@ -415,7 +415,7 @@
 
             <div class="msg-card" onclick="showRandomCoupon()">
                 <div style="font-size: 3rem;">🎟️</div>
-                <h3>Cuponera</h3>
+                <h3>Cupones</h3>
                 <p id="coupon-text" style="font-size: 1rem; margin-top: 10px; color: #555;">Click para sacar un vale...</p>
             </div>
         </div>
@@ -457,11 +457,11 @@
         
         <div id="gift-trigger" class="gift-container" onclick="revealSurprise()">
              <div class="gift-emoji">🎁</div>
-             <p class="gift-hint">¡Tócame para ver la magia!</p>
+             <p class="gift-hint">¡Tócame para ver la sorpresa!</p>
         </div>
 
         <div id="surprise-reveal">
-            <h2 class="kawaii-title">✨ La Fórmula de Nuestro Amor ✨</h2>
+            <h2 class="kawaii-title">✨ La Fórmula que me acordo a ti ✨</h2>
             
             <div class="equation-box">
                 <span class="equation-line" style="color: #fff;">(sqrt(cos(x))*cos(300x)+sqrt(abs(x))-0.7)</span>
@@ -513,9 +513,8 @@
             playRandomSong();
             document.body.addEventListener('click', function() {
                 if (audioCtx.state === 'suspended') audioCtx.resume();
-                if (bgMusic.paused && !isMuted) bgMusic.play();
-            }, { once: true }); 
-            flippyAC("¡Hola mi niña hermosa! Mira lo que hice para ti.");
+                if (bgMusic.paused && !isMuted) bgMusic.play()); }, { once: true }); 
+            flippyAC("Hola mi vidaaa, como te va?");
         };
 
         function playAnimaleseBeep() {
@@ -547,9 +546,9 @@
         }
 
         // --- MENSAJES ---
-        const dailyMessages = [ "Eres mi razón de sonreír.", "Hoy te ves hermosa.", "Te amo más que ayer.", "Gracias por existir.", "Eres mi lugar seguro.", "Siempre juntos.", "Mi vida es mejor contigo.", "Eres mi sueño hecho realidad.", "Tu risa es mi sonido favorito.", "Contigo todo es perfecto.", "Eres arte.", "Me haces muy feliz.", "Eres mi persona favorita." ];
-        const reasons = [ "Por tu sonrisa.", "Por como me miras.", "Por tu apoyo incondicional.", "Por tus abrazos.", "Por hacerme reír.", "Por ser tú.", "Por tu bondad.", "Por tu inteligencia." ];
-        const coupons = [ "Vale por un Abrazo 🤗", "Vale por un Beso 😘", "Vale por una Cena 🍔", "Vale por un Masaje 💆‍♀️", "Vale por una Película 🎬", "Vale por un Helado 🍦" ];
+        const dailyMessages = [ "Esta pagina te la hice con mucho amor, espero que la veas todos los dias y revises las cositas que le voy a ir metiendo, no olvides que te amo con todo mi corazón. Confía en ti misma, yo se que todo lo vas a lograr, te amo."];
+        const reasons = [ "Por tu bella sonrisa", "Por como me miras", "Por tu apoyo", "Por tus cálidos abrazos", "Por hacerme reír, tu sentido del humor", "Por ser tú misma", "Por ser cariñosa", "Por tu inteligencia" ];
+        const coupons = [ "Este vale por un abrazo", "Este vale por un besito", "Este vale por una salida a comer", "Este vale por un masaje", "Este vale para ir a cine", "Este vale por un heladito" ];
 
         function updateDailyMessage() {
             const day = new Date().getDate();
@@ -615,7 +614,7 @@
         // --- SORPRESA REVEAL ---
         function revealSurprise() {
             confettiEffect();
-            flippyAC("¡Woooow! ¡Mira esto!");
+            flippyAC("Mira estoooo");
             const gift = document.getElementById('gift-trigger');
             const reveal = document.getElementById('surprise-reveal');
             
@@ -647,10 +646,10 @@
                 section.style.display = 'flex'; void section.offsetWidth; 
                 section.classList.remove('anim-exit'); section.classList.add('anim-enter');
                 currentSectionId = 'sec-' + id;
-                if(id === 'nosotros') flippyAC("¡Mira qué guapos nos vemos!");
-                else if(id === 'mensajes') flippyAC("Tengo algo que decirte...");
-                else if(id === 'tiempo') flippyAC("¡Cada segundo cuenta!");
-                else { flippyAC("¡Una Ecuación de Amor!"); }
+                if(id === 'nosotros') flippyAC("Mira lo lindos que nos vemos, mas que todo tu");
+                else if(id === 'mensajes') flippyAC("Tengo mucho que decirte");
+                else if(id === 'tiempo') flippyAC("Llevamos ya mucho tiempo juntos 💕");
+                else { flippyAC("Mira esta sorpresa que encontré, me acordé de ti"); }
             }, 600);
         }
         function closeSection() {
@@ -728,10 +727,10 @@
             }, 50); 
         }
 
-        function toggleBubble() { const b = document.getElementById('bubble'); if(b.classList.contains('bubble-show')) { b.classList.remove('bubble-show'); b.classList.add('bubble-hide'); } else { flippyAC("¿Me llamaste? ¡Aquí estoy! 💕"); } }
+        function toggleBubble() { const b = document.getElementById('bubble'); if(b.classList.contains('bubble-show')) { b.classList.remove('bubble-show'); b.classList.add('bubble-hide'); } else { flippyAC("Holii mi amor, aqui te ando acompañando"); } }
 
         function confettiEffect() {
-            flippyAC("¡TE AMOOO!");
+            flippyAC("TE AMO MUCHO MI VIDA");
             for(let i=0; i<60; i++) {
                 const c = document.createElement('div');
                 c.style.position = 'fixed'; c.style.width = '15px'; c.style.height = '15px';
@@ -744,4 +743,5 @@
     </script>
 </body>
 </html>
+
 
