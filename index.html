@@ -513,8 +513,9 @@
             playRandomSong();
             document.body.addEventListener('click', function() {
                 if (audioCtx.state === 'suspended') audioCtx.resume();
-                if (bgMusic.paused && !isMuted) bgMusic.play()); }, { once: true }); 
-            flippyAC("Hola mi vidaaa, como te va?");
+                if (bgMusic.paused && !isMuted) bgMusic.play();
+            }, { once: true }); 
+            flippyAC("Hola mi vidaa, como te va?.");
         };
 
         function playAnimaleseBeep() {
@@ -546,7 +547,7 @@
         }
 
         // --- MENSAJES ---
-        const dailyMessages = [ "Esta pagina te la hice con mucho amor, espero que la veas todos los dias y revises las cositas que le voy a ir metiendo, no olvides que te amo con todo mi corazón. Confía en ti misma, yo se que todo lo vas a lograr, te amo."];
+        const dailyMessages = [ "Esta pagina te la hice con mucho amor, espero que la veas todos los dias y revises las cositas que le voy a ir metiendo, no olvides que te amo con todo mi corazón. Confía en ti misma, yo se que todo lo vas a lograr, te amo." ];
         const reasons = [ "Por tu bella sonrisa", "Por como me miras", "Por tu apoyo", "Por tus cálidos abrazos", "Por hacerme reír, tu sentido del humor", "Por ser tú misma", "Por ser cariñosa", "Por tu inteligencia" ];
         const coupons = [ "Este vale por un abrazo", "Este vale por un besito", "Este vale por una salida a comer", "Este vale por un masaje", "Este vale para ir a cine", "Este vale por un heladito" ];
 
@@ -743,5 +744,6 @@
     </script>
 </body>
 </html>
+
 
 
