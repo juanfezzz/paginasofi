@@ -55,7 +55,7 @@
         #cinta { bottom: 70px; left: 0; width: 100%; height: 40px; object-fit: cover; opacity: 0.6; mix-blend-mode: multiply; }
         #brillos { top:0; left:0; width:100%; height:100%; object-fit: cover; opacity: 0.5; mix-blend-mode: screen; animation: twinkle 3s infinite alternate; pointer-events: none; }
 
-        /* --- MENÚ PRINCIPAL (ESTILOS GENERALES) --- */
+        /* --- MENÚ PRINCIPAL --- */
         #buttons-wrapper {
             position: absolute; top: 50%; left: 50%; 
             transform: translate(-50%, -50%) translateX(calc(var(--mouse-x) * -15px)) translateY(calc(var(--mouse-y) * -15px)) rotateX(calc(var(--mouse-y) * -5deg)) rotateY(calc(var(--mouse-x) * 5deg));
@@ -153,14 +153,65 @@
         }
         .close-lightbox:hover { transform: scale(1.1) rotate(90deg); background: #ff69b4; color: white; }
 
-        /* SECCIÓN MENSAJES */
-        .messages-grid { display: flex; gap: 30px; justify-content: center; align-items: center; width: 100%; max-width: 1000px; }
-        .msg-card { background: white; padding: 25px; border: 2px dashed #ff69b4; border-radius: 20px; font-family: var(--font-cutout); font-size: 1.3rem; text-align: center; color: #333; box-shadow: 5px 5px 0 rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 250px; height: 200px; position: relative; }
+        /* --- SECCIÓN MENSAJES (FONDO OSCURO Y DISEÑO CARTA) --- */
+        .dark-bg-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(40, 10, 25, 0.6); 
+            z-index: -1; opacity: 0; transition: opacity 0.8s ease;
+        }
+        #sec-mensajes.anim-enter .dark-bg-overlay { opacity: 1; }
+
+        .messages-grid { display: flex; gap: 30px; justify-content: center; align-items: center; width: 100%; max-width: 1000px; z-index: 10; }
+        
+        .msg-card { 
+            background: white; padding: 25px; border: 2px dashed #ff69b4; border-radius: 20px; 
+            font-family: var(--font-cutout); font-size: 1.3rem; text-align: center; color: #333; 
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            width: 250px; height: 200px; position: relative; 
+        }
         .msg-card:hover { transform: scale(1.05) rotate(2deg); background: #fff0f5; }
-        .center-card { width: 320px; height: 280px; border: 4px solid #ff69b4; border-style: double; background: #fff; transform: scale(1.05); z-index: 5; }
-        .center-card h3 { color: #ff1493; margin-bottom: 10px; font-family: var(--font-kawaii); }
-        .center-card p { font-size: 1.5rem; line-height: 1.4; }
-        #daily-timer { margin-top: 15px; background: #333; color: #0f0; font-family: var(--font-body); padding: 5px 15px; border-radius: 5px; font-size: 1.5rem; box-shadow: inset 0 0 10px rgba(0,255,0,0.2); }
+        
+        /* CARTA CENTRAL CON SCROLL Y WASHI TAPE */
+        .center-card { 
+            width: 360px; height: 480px; 
+            background: #fffdf5; 
+            border: none; border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 0 30px rgba(255, 182, 193, 0.1);
+            transform: scale(1.05); z-index: 5; 
+            justify-content: flex-start; padding: 40px 25px 25px 25px;
+            overflow-y: auto; position: relative;
+        }
+        .center-card:hover { transform: scale(1.05); background: #fffdf5; }
+        
+        .center-card::before {
+            content: ''; position: absolute;
+            top: -10px; left: 50%; transform: translateX(-50%) rotate(-2deg);
+            width: 130px; height: 35px;
+            background: rgba(255, 182, 193, 0.8);
+            border-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10; backdrop-filter: blur(2px);
+        }
+
+        .center-card h3 { color: #ff1493; margin-bottom: 15px; font-family: var(--font-kawaii); font-size: 1.8rem; flex-shrink: 0; }
+        .center-card::-webkit-scrollbar { width: 8px; }
+        .center-card::-webkit-scrollbar-track { background: transparent; }
+        .center-card::-webkit-scrollbar-thumb { background: #ffb7c5; border-radius: 10px; }
+        .center-card::-webkit-scrollbar-thumb:hover { background: #ff69b4; }
+
+        /* PRE-WRAP para que detecte los \n en el javascript */
+        #weekly-msg-text { 
+            font-size: 1.3rem; line-height: 1.6; margin: 10px 0; 
+            white-space: pre-wrap; text-align: center; color: #444;
+            font-family: var(--font-body); text-shadow: 1px 1px 0 white;
+        }
+        
+        .timer-wrapper {
+            margin-top: auto; flex-shrink: 0; display: flex; flex-direction: column; align-items: center;
+            background: #ffeff2; padding: 10px 20px; border-radius: 15px; border: 2px dashed #ffb7c5;
+            width: 100%; margin-top: 20px;
+        }
+        #weekly-timer { color: #ff1493; font-family: var(--font-body); font-size: 1.4rem; font-weight: bold; }
 
         /* SECCIÓN TIEMPO */
         .clock-wrapper { display: flex; flex-direction: column; align-items: center; gap: 30px; background: rgba(255,255,255,0.9); padding: 40px; border-radius: 40px; border: 5px solid #ffb7c5; box-shadow: 0 10px 40px rgba(255,105,180,0.2); }
@@ -180,7 +231,7 @@
         #gift-trigger:hover .gift-emoji { transform: scale(1.1) rotate(10deg); }
         .gift-hint { font-family: var(--font-kawaii); color: white; margin-top: 20px; font-size: 2rem; text-shadow: 2px 2px #ff69b4; }
         #surprise-reveal { display: none; opacity: 0; flex-direction: column; align-items: center; gap: 25px; transition: opacity 0.8s ease-in; max-width: 90%; }
-        .kawaii-title { font-family: var(--font-kawaii); color: white; font-size: 2.5rem; text-shadow: 3px 3px 0 #ff1493, -1px -1px 0 white; background: rgba(255, 105, 180, 0.7); padding: 10px 25px; border-radius: 30px; border: 3px dotted white; }
+        .kawaii-title { font-family: var(--font-kawaii); color: white; font-size: 2.5rem; text-shadow: 3px 3px 0 #ff1493, -1px -1px 0 white; background: rgba(255, 105, 180, 0.7); padding: 10px 25px; border-radius: 30px; border: 3px dotted white; text-align: center; }
         .equation-box { background: #333; border: 4px solid #ffb7c5; border-radius: 15px; padding: 20px; font-family: var(--font-body); color: #ff69b4; font-size: 1.1rem; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); position: relative; overflow: hidden; }
         .equation-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px); pointer-events: none; }
         .equation-line { margin: 5px 0; display: block; white-space: nowrap; }
@@ -203,69 +254,34 @@
            📱 OPTIMIZACIÓN REAL PARA MÓVILES (0 SCROLL)
            ========================================= */
         @media (max-width: 768px) {
-            /* 1. MENÚ PRINCIPAL (Cuadrícula 2x2 ajustada) */
-            #buttons-wrapper {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                width: 90%; 
-                gap: 15px;
-                top: 50%; left: 50%; transform: translate(-50%, -50%) !important;
-            }
-            .menu-item {
-                width: 100%; /* Llenar la celda de la grilla */
-                height: 45vw; /* Altura proporcional */
-                max-height: 200px;
-            }
+            /* 1. MENÚ PRINCIPAL */
+            #buttons-wrapper { display: grid; grid-template-columns: 1fr 1fr; width: 90%; gap: 15px; top: 50%; left: 50%; transform: translate(-50%, -50%) !important; }
+            .menu-item { width: 100%; height: 45vw; max-height: 220px; }
             .card-text-area span { font-size: 1.2rem; padding: 2px 8px; }
             .menu-item::after { font-size: 1.5rem; }
 
-            /* 2. MENSAJES (Layout Compacto) */
-            .messages-grid {
-                display: grid;
-                grid-template-areas: "daily daily" "reason coupon";
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-                width: 95%;
-                margin-top: 10px;
+            /* 2. MENSAJES (Layout Tetris Compacto) */
+            .messages-grid { display: grid; grid-template-areas: "daily daily" "reason coupon"; grid-template-columns: 1fr 1fr; gap: 10px; width: 95%; margin-top: 10px; }
+            .center-card { 
+                grid-area: daily; width: 100% !important; 
+                height: 42vh !important; /* Altura para permitir el scroll de la carta larga en móvil */
+                min-height: 200px; padding: 30px 15px 15px 15px; transform: none; 
             }
-            .center-card {
-                grid-area: daily;
-                width: 100% !important;
-                height: auto !important;
-                min-height: 160px; /* Reducido */
-                padding: 10px;
-                transform: none; /* Quitar escala */
-            }
-            .center-card p { font-size: 1.1rem; margin: 10px 0; }
-            .msg-card {
-                width: 100% !important;
-                height: 120px; /* Bajitos */
-                padding: 10px;
-                margin: 0;
-            }
+            .center-card h3 { font-size: 1.4rem; }
+            .center-card::before { width: 90px; height: 25px; } 
+            .msg-card { width: 100% !important; height: 110px; padding: 10px; margin: 0; border-radius: 15px; }
             .msg-card h3 { font-size: 1.1rem; }
-            .msg-card p { font-size: 0.9rem; }
+            .msg-card p { font-size: 0.8rem; margin-top: 5px; }
 
             /* 3. LIBRO */
-            .book-wrapper {
-                width: 100vw;
-                height: 55vh; /* Menos altura */
-                background-size: contain;
-                background-repeat: no-repeat;
-                background-position: center;
-            }
+            .book-wrapper { width: 100vw; height: 55vh; background-size: contain; background-repeat: no-repeat; background-position: center; }
             .book-pages-container { width: 85%; height: 75%; }
             .page-side { padding: 5px; justify-content: center; gap: 5px; }
-            .photo-container {
-                width: 35vw; 
-                height: 42vw;
-                padding: 5px 5px 20px 5px;
-            }
+            .photo-container { width: 35vw; height: 42vw; padding: 5px 5px 20px 5px; }
             .book-nav { width: 40px; height: 40px; font-size: 1.5rem; }
-            .nav-prev { left: 5px; }
-            .nav-next { right: 5px; }
+            .nav-prev { left: 5px; } .nav-next { right: 5px; }
 
-            /* 4. RELOJ (Escalado) */
+            /* 4. RELOJ */
             .clock-wrapper { transform: scale(0.65); padding: 15px; width: 100%; box-shadow: none; background: rgba(255,255,255,0.8); }
             
             /* 5. OTROS AJUSTES */
@@ -286,6 +302,7 @@
     <div id="white-fade"></div>
 
     <audio id="bg-music"></audio>
+    <audio id="music-mensajes" src="audio/cancion_mensajes.mp3" loop></audio>
     <audio id="click-sound" src="audio/click.mp3"></audio>
     <audio id="page-flip-sound" src="audio/pageflip.mp3"></audio>
 
@@ -337,86 +354,56 @@
              <div class="book-nav nav-next" onclick="changePage(1)">❯</div>
 
              <div class="book-pages-container">
-                
                 <div class="book-page page-1 page-active">
-                    <div class="page-side">
-                        <div class="photo-container" style="transform: rotate(-3deg);" onclick="openLightbox('img/f1.jpeg')"><img src="img/f1.jpeg" class="photo-content"></div>
-                        <div class="photo-container" style="transform: rotate(2deg);" onclick="openLightbox('img/f2.jpeg')"><img src="img/f2.jpeg" class="photo-content"></div>
-                    </div>
-                    <div class="page-side">
-                        <div class="photo-container" style="transform: rotate(1deg);" onclick="openLightbox('img/f3.jpeg')"><img src="img/f3.jpeg" class="photo-content"></div>
-                        <div class="photo-container" style="transform: rotate(-4deg);" onclick="openLightbox('img/f4.jpeg')"><img src="img/f4.jpeg" class="photo-content"></div>
-                    </div>
+                    <div class="page-side"><div class="photo-container" style="transform: rotate(-3deg);" onclick="openLightbox('img/f1.jpeg')"><img src="img/f1.jpeg" class="photo-content"></div><div class="photo-container" style="transform: rotate(2deg);" onclick="openLightbox('img/f2.jpeg')"><img src="img/f2.jpeg" class="photo-content"></div></div>
+                    <div class="page-side"><div class="photo-container" style="transform: rotate(1deg);" onclick="openLightbox('img/f3.jpeg')"><img src="img/f3.jpeg" class="photo-content"></div><div class="photo-container" style="transform: rotate(-4deg);" onclick="openLightbox('img/f4.jpeg')"><img src="img/f4.jpeg" class="photo-content"></div></div>
                 </div>
-
                 <div class="book-page page-2 page-hidden-right">
-                    <div class="page-side">
-                        <div class="photo-container" style="transform: rotate(-1deg);" onclick="openLightbox('img/f5.jpeg')"><img src="img/f5.jpeg" class="photo-content"></div>
-                        <div class="photo-container" style="transform: rotate(3deg);" onclick="openLightbox('img/f6.jpeg')"><img src="img/f6.jpeg" class="photo-content"></div>
-                    </div>
-                    <div class="page-side">
-                        <div class="photo-container" style="transform: rotate(2deg);" onclick="openLightbox('img/f7.jpeg')"><img src="img/f7.jpeg" class="photo-content"></div>
-                        <div class="photo-container" style="transform: rotate(-1deg);" onclick="openLightbox('img/f8.jpeg')"><img src="img/f8.jpeg" class="photo-content"></div>
-                    </div>
+                    <div class="page-side"><div class="photo-container" style="transform: rotate(-1deg);" onclick="openLightbox('img/f5.jpeg')"><img src="img/f5.jpeg" class="photo-content"></div><div class="photo-container" style="transform: rotate(3deg);" onclick="openLightbox('img/f6.jpeg')"><img src="img/f6.jpeg" class="photo-content"></div></div>
+                    <div class="page-side"><div class="photo-container" style="transform: rotate(2deg);" onclick="openLightbox('img/f7.jpeg')"><img src="img/f7.jpeg" class="photo-content"></div><div class="photo-container" style="transform: rotate(-1deg);" onclick="openLightbox('img/f8.jpeg')"><img src="img/f8.jpeg" class="photo-content"></div></div>
                 </div>
-
                 <div class="book-page page-3 page-hidden-right">
-                    <div class="page-side">
-                        <div class="photo-container" style="transform: rotate(2deg);" onclick="openLightbox('img/f9.jpeg')"><img src="img/f9.jpeg" class="photo-content"></div>
-                        <div class="photo-container" style="transform: rotate(-2deg);" onclick="openLightbox('img/f10.jpeg')"><img src="img/f10.jpeg" class="photo-content"></div>
-                    </div>
-                    <div class="page-side">
-                        <div class="photo-container" style="transform: rotate(-1deg);" onclick="openLightbox('img/f11.jpeg')"><img src="img/f11.jpeg" class="photo-content"></div>
-                        <div class="photo-container" style="transform: rotate(2deg);" onclick="openLightbox('img/f12.jpeg')"><img src="img/f12.jpeg" class="photo-content"></div>
-                    </div>
+                    <div class="page-side"><div class="photo-container" style="transform: rotate(2deg);" onclick="openLightbox('img/f9.jpeg')"><img src="img/f9.jpeg" class="photo-content"></div><div class="photo-container" style="transform: rotate(-2deg);" onclick="openLightbox('img/f10.jpeg')"><img src="img/f10.jpeg" class="photo-content"></div></div>
+                    <div class="page-side"><div class="photo-container" style="transform: rotate(-1deg);" onclick="openLightbox('img/f11.jpeg')"><img src="img/f11.jpeg" class="photo-content"></div><div class="photo-container" style="transform: rotate(2deg);" onclick="openLightbox('img/f12.jpeg')"><img src="img/f12.jpeg" class="photo-content"></div></div>
                 </div>
-
                 <div class="book-page page-4 page-hidden-right">
-                    <div class="page-side">
-                        <div class="photo-container" style="transform: rotate(-2deg);" onclick="openLightbox('img/f13.jpeg')"><img src="img/f13.jpeg" class="photo-content"></div>
-                        <div class="photo-container" style="transform: rotate(1deg);" onclick="openLightbox('img/f14.jpeg')"><img src="img/f14.jpeg" class="photo-content"></div>
-                    </div>
-                    <div class="page-side">
-                        <div class="photo-container" style="transform: rotate(2deg);" onclick="openLightbox('img/f15.jpeg')"><img src="img/f15.jpeg" class="photo-content"></div>
-                        <div class="photo-container" style="transform: rotate(-1deg);" onclick="openLightbox('img/f16.jpeg')"><img src="img/f16.jpeg" class="photo-content"></div>
-                    </div>
+                    <div class="page-side"><div class="photo-container" style="transform: rotate(-2deg);" onclick="openLightbox('img/f13.jpeg')"><img src="img/f13.jpeg" class="photo-content"></div><div class="photo-container" style="transform: rotate(1deg);" onclick="openLightbox('img/f14.jpeg')"><img src="img/f14.jpeg" class="photo-content"></div></div>
+                    <div class="page-side"><div class="photo-container" style="transform: rotate(2deg);" onclick="openLightbox('img/f15.jpeg')"><img src="img/f15.jpeg" class="photo-content"></div><div class="photo-container" style="transform: rotate(-1deg);" onclick="openLightbox('img/f16.jpeg')"><img src="img/f16.jpeg" class="photo-content"></div></div>
                 </div>
-
                 <div class="book-page page-5 page-hidden-right">
-                    <div class="page-side">
-                        <div class="photo-container" style="transform: rotate(1deg);" onclick="openLightbox('img/f17.jpeg')"><img src="img/f17.jpeg" class="photo-content"></div>
-                        <div class="photo-container" style="transform: rotate(-2deg);" onclick="openLightbox('img/f18.jpeg')"><img src="img/f18.jpeg" class="photo-content"></div>
-                    </div>
+                    <div class="page-side"><div class="photo-container" style="transform: rotate(1deg);" onclick="openLightbox('img/f17.jpeg')"><img src="img/f17.jpeg" class="photo-content"></div><div class="photo-container" style="transform: rotate(-2deg);" onclick="openLightbox('img/f18.jpeg')"><img src="img/f18.jpeg" class="photo-content"></div></div>
                     <div class="page-side" style="justify-content: center; align-items: center;">
                         <div class="photo-container" style="transform: rotate(2deg); margin-bottom: 20px;" onclick="openLightbox('img/f19.jpeg')"><img src="img/f19.jpeg" class="photo-content"></div>
                         <img src="img/chiikawa_3.jpg" alt="Sticker" style="width: 150px; transform: rotate(15deg); filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.2));">
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
     <div id="sec-mensajes" class="content-screen">
-        <button class="back-button" onclick="closeSection()">⬅ VOLVER</button>
+        <div class="dark-bg-overlay"></div> <button class="back-button" onclick="closeSection()">⬅ VOLVER</button>
+        
         <div class="messages-grid">
-            
             <div class="msg-card center-card">
-                <h3>Mensaje Diario 💌</h3>
-                <p id="daily-msg-text" style="font-size: 1.3rem; margin: 20px 0;">Cargando mensaje...</p>
-                <div id="daily-timer">00:00:00</div>
+                <h3>Mensaje Semanal 💌</h3>
+                <p id="weekly-msg-text">Cargando mensaje...</p>
+                <div class="timer-wrapper">
+                    <span style="font-size: 0.9rem; color: #ff69b4;">Siguiente mensaje en:</span>
+                    <div id="weekly-timer">00:00:00</div>
+                </div>
             </div>
 
             <div class="msg-card" onclick="showRandomReason()">
-                <div style="font-size: 3rem;">💖</div>
+                <div style="font-size: 2.5rem; margin-bottom: 5px;">💖</div>
                 <h3>100 Razones</h3>
-                <p id="reason-text" style="font-size: 1rem; margin-top: 10px; color: #555;">Click para ver una razón...</p>
+                <p id="reason-text">Click para ver una razón...</p>
             </div>
 
             <div class="msg-card" onclick="showRandomCoupon()">
-                <div style="font-size: 3rem;">🎟️</div>
+                <div style="font-size: 2.5rem; margin-bottom: 5px;">🎟️</div>
                 <h3>Cupones</h3>
-                <p id="coupon-text" style="font-size: 1rem; margin-top: 10px; color: #555;">Click para sacar un vale...</p>
+                <p id="coupon-text">Click para sacar un vale...</p>
             </div>
         </div>
     </div>
@@ -462,13 +449,11 @@
 
         <div id="surprise-reveal">
             <h2 class="kawaii-title">✨ La Fórmula que me acordo a ti ✨</h2>
-            
             <div class="equation-box">
                 <span class="equation-line" style="color: #fff;">(sqrt(cos(x))*cos(300x)+sqrt(abs(x))-0.7)</span>
                 <span class="equation-line" style="color: #ffb7c5;">* (4-x*x)^0.01</span>
                 <span class="equation-line" style="margin-top: 15px; font-size: 0.9rem; color: #aaa;">sqrt(6-x^2), -sqrt(6-x^2) from -4.5 to 4.5</span>
             </div>
-
             <div class="graph-frame">
                 <canvas id="heartCanvas" width="320" height="320"></canvas>
             </div>
@@ -491,14 +476,17 @@
             document.body.style.setProperty('--mouse-y', y);
         });
 
-        // --- AUDIO ---
+        // --- SISTEMA DE AUDIO ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         let isMuted = false;
+        
+        const bgMusic = document.getElementById('bg-music');
+        const musicMensajes = document.getElementById('music-mensajes'); 
+
         const playlist = [
             'audio/c1.mp3', 'audio/c2.mp3', 'audio/c3.mp3', 'audio/c4.mp3', 'audio/c5.mp3',
             'audio/c6.mp3', 'audio/c7.mp3', 'audio/c8.mp3', 'audio/c9.mp3', 'audio/c10.mp3'
         ];
-        const bgMusic = document.getElementById('bg-music');
 
         function playRandomSong() {
             const randomSong = playlist[Math.floor(Math.random() * playlist.length)];
@@ -508,15 +496,47 @@
         }
         bgMusic.addEventListener('ended', playRandomSong);
         
-        // --- INICIO AUTOMÁTICO (TRUCO) ---
         window.onload = () => {
             playRandomSong();
             document.body.addEventListener('click', function() {
                 if (audioCtx.state === 'suspended') audioCtx.resume();
-                if (bgMusic.paused && !isMuted) bgMusic.play();
+                if (bgMusic.paused && !isMuted && currentSectionId !== 'sec-mensajes') bgMusic.play();
             }, { once: true }); 
             flippyAC("Hola mi vidaa, como te va?.");
         };
+
+        function fadeOutAudio(audioElement) {
+            if (!audioElement || audioElement.paused) return;
+            clearInterval(audioElement.fadeInterval);
+            let vol = audioElement.volume;
+            audioElement.fadeInterval = setInterval(() => {
+                if (vol > 0.02) {
+                    vol -= 0.02;
+                    audioElement.volume = Math.max(0, vol);
+                } else {
+                    audioElement.volume = 0;
+                    audioElement.pause();
+                    clearInterval(audioElement.fadeInterval);
+                }
+            }, 50);
+        }
+
+        function fadeInAudio(audioElement, targetVol) {
+            if (!audioElement || isMuted) return;
+            clearInterval(audioElement.fadeInterval);
+            audioElement.volume = 0;
+            audioElement.play().catch(e => {});
+            let vol = 0;
+            audioElement.fadeInterval = setInterval(() => {
+                if (vol < targetVol - 0.02) {
+                    vol += 0.02;
+                    audioElement.volume = Math.min(targetVol, vol);
+                } else {
+                    audioElement.volume = targetVol;
+                    clearInterval(audioElement.fadeInterval);
+                }
+            }, 50);
+        }
 
         function playAnimaleseBeep() {
             if (isMuted || audioCtx.state === 'suspended') return;
@@ -537,37 +557,51 @@
             if (isMuted) {
                 btn.innerText = "🔇";
                 bgMusic.muted = true;
+                musicMensajes.muted = true;
                 if(audioCtx.state === 'running') audioCtx.suspend();
             } else {
                 btn.innerText = "🔊";
                 bgMusic.muted = false;
-                bgMusic.play().catch(e => {}); 
+                musicMensajes.muted = false;
+                if (currentSectionId === 'sec-mensajes') { musicMensajes.play().catch(e => {}); } 
+                else { bgMusic.play().catch(e => {}); }
                 if(audioCtx.state === 'suspended') audioCtx.resume();
             }
         }
 
-        // --- MENSAJES ---
-        const dailyMessages = [ "Esta pagina te la hice con mucho amor, espero que la veas todos los dias y revises las cositas que le voy a ir metiendo, no olvides que te amo con todo mi corazón. Confía en ti misma, yo se que todo lo vas a lograr, te amo." ];
+        // --- TUS TEXTOS ORIGINALES RESTAURADOS ---
+        const weeklyMessages = [ 
+            "Esta pagina te la hice con mucho amor, espero que la veas todos los dias y revises las cositas que le voy a ir metiendo.\n\nNo olvides que te amo con todo mi corazón.\n\nConfía en ti misma, yo se que todo lo vas a lograr, te amo."
+        ];
         const reasons = [ "por tu bella sonrisa", "por como me miras", "por tu apoyo", "por tus cálidos y lindos abrazos", "por hacerme reír y alegrarme el día", "por ser tú misma", "por ser cariñosa y amorosa", "por ser tan inteligente" ];
         const coupons = [ "Este vale por un abrazo", "Este vale por un besito", "Este vale por una salida a comer", "Este vale por un masaje", "Este vale para ir a cine", "Este vale por un heladito" ];
 
-        function updateDailyMessage() {
-            const day = new Date().getDate();
-            const msg = dailyMessages[day % dailyMessages.length];
-            document.getElementById('daily-msg-text').innerText = `"${msg}"`;
-        }
-        function updateDailyTimer() {
+        function updateWeeklyMessage() {
             const now = new Date();
-            const tomorrow = new Date(now);
-            tomorrow.setHours(24, 0, 0, 0);
-            const diff = tomorrow - now;
+            const start = new Date(now.getFullYear(), 0, 1);
+            const days = Math.floor((now - start) / (24 * 60 * 60 * 1000));
+            const weekNumber = Math.ceil(days / 7);
+            const msg = weeklyMessages[weekNumber % weeklyMessages.length];
+            document.getElementById('weekly-msg-text').innerText = msg;
+        }
+
+        function updateWeeklyTimer() {
+            const now = new Date();
+            const nextSunday = new Date(now);
+            const daysUntilSunday = 7 - now.getDay(); 
+            nextSunday.setDate(now.getDate() + (daysUntilSunday === 0 ? 7 : daysUntilSunday)); 
+            nextSunday.setHours(0, 0, 0, 0); 
+            
+            const diff = nextSunday - now;
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
             const m = Math.floor((diff / (1000 * 60)) % 60);
             const s = Math.floor((diff / 1000) % 60);
-            document.getElementById('daily-timer').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+            
+            document.getElementById('weekly-timer').innerText = `${d}d ${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
         }
-        setInterval(updateDailyTimer, 1000);
-        updateDailyMessage(); 
+        setInterval(updateWeeklyTimer, 1000);
+        updateWeeklyMessage(); 
 
         function showRandomReason() {
             const r = reasons[Math.floor(Math.random() * reasons.length)];
@@ -612,7 +646,6 @@
             ctx.stroke();
         }
 
-        // --- SORPRESA REVEAL ---
         function revealSurprise() {
             confettiEffect();
             flippyAC("Mira estoooo");
@@ -629,7 +662,7 @@
             }, 500);
         }
 
-        // --- NAV ---
+        // --- NAVEGACIÓN Y CROSSFADE ---
         let currentSectionId = null;
         function openSection(id) {
             if (!isMuted) { const audio = document.getElementById('click-sound'); if(audio) audio.play().catch(e => {}); }
@@ -647,14 +680,28 @@
                 section.style.display = 'flex'; void section.offsetWidth; 
                 section.classList.remove('anim-exit'); section.classList.add('anim-enter');
                 currentSectionId = 'sec-' + id;
-                if(id === 'nosotros') flippyAC("Mira lo lindos que nos vemos, mas que todo tu");
-                else if(id === 'mensajes') flippyAC("Tengo mucho que decirte");
+
+                // CROSSFADE AUDIO Y TEXTOS ORIGINALES DE FLIPPY
+                if (id === 'mensajes') {
+                    fadeOutAudio(bgMusic);
+                    fadeInAudio(musicMensajes, 0.2);
+                    flippyAC("Tengo mucho que decirte");
+                }
+                else if(id === 'nosotros') flippyAC("Mira lo lindos que nos vemos, mas que todo tu");
                 else if(id === 'tiempo') flippyAC("Llevamos ya mucho tiempo juntos 💕");
                 else { flippyAC("Mira esta sorpresa que encontré, me acordé de ti"); }
+
             }, 600);
         }
+
         function closeSection() {
             if (!isMuted) { const audio = document.getElementById('click-sound'); if(audio) audio.play().catch(e => {}); }
+            
+            if (currentSectionId === 'sec-mensajes') {
+                fadeOutAudio(musicMensajes);
+                fadeInAudio(bgMusic, 0.2);
+            }
+
             if(currentSectionId) {
                 const section = document.getElementById(currentSectionId);
                 section.classList.remove('anim-enter'); section.classList.add('anim-exit');
@@ -667,6 +714,7 @@
                 currentSectionId = null;
             }, 600);
         }
+
         function openLightbox(src) { const lb = document.getElementById('lightbox'); const img = document.getElementById('lightbox-img'); img.src = src; lb.style.display = 'flex'; }
         function closeLightbox() { document.getElementById('lightbox').style.display = 'none'; }
 
@@ -675,7 +723,7 @@
         function changePage(direction) {
             const newPage = currentPage + direction;
             if(newPage < 1 || newPage > totalPages) return;
-            if (!isMuted) { const audio = document.getElementById('page-flip-sound'); if(audio) audio.currentTime = 0; audio.play().catch(e => {}); }
+            if (!isMuted) { const audio = document.getElementById('page-flip-sound'); if(audio) { audio.currentTime = 0; audio.play().catch(e => {}); } }
             const currentPageEl = document.querySelector(`.page-${currentPage}`);
             const newPageEl = document.querySelector(`.page-${newPage}`);
             if(direction > 0) { 
@@ -744,8 +792,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
